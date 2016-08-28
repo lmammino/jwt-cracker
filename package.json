@@ -1,0 +1,27 @@
+{
+  "name": "jwt-cracker",
+  "version": "1.0.0",
+  "description": "Simple HS256 JWT token brute force cracker",
+  "main": "index.js",
+  "bin": {
+    "jwt-cracker": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": {
+    "name": "Luciano Mammino",
+    "email": "lucianomammino@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lmammino/jwt-cracker"
+  },
+  "license": "MIT",
+  "engines" : {
+    "node" : ">=4.0.0"
+  },
+  "dependencies": {
+    "variations-stream": "^0.1.3"
+  }
+}
