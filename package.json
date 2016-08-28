@@ -1,6 +1,6 @@
 {
   "name": "jwt-cracker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple HS256 JWT token brute force cracker",
   "main": "index.js",
   "bin": {

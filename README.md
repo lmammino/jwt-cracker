@@ -30,6 +30,17 @@ Where:
 * **maxLength**: the max length of the string generated during the brute force (default: 12)
 
 
+## Example
+
+Cracking the default [jwt.io example](https://jwt.io):
+
+```bash
+jwt-cracker "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ" "abcdefghijklmnopqrstuwxyz" 6
+```
+
+It might take from 5 to 30 minutes depending on the power of your workstation.
+
+
 ## Contributing
 
 Everyone is very welcome to contribute to this project.

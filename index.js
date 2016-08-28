@@ -54,7 +54,7 @@ let attempts = 0;
 variationsStream(alphabet, maxLength)
   .on('data', function(comb) {
     attempts++;
-    const currentSignature = generateSignature(header, payload, comb);
+    const currentSignature = generateSignature(content, comb);
     if (attempts%100000 === 0) {
       console.log('Attempts:', attempts);
     }
