@@ -38,7 +38,7 @@ Cracking the default [jwt.io example](https://jwt.io):
 jwt-cracker "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ" "abcdefghijklmnopqrstuwxyz" 6
 ```
 
-It might take from 5 to 30 minutes depending on the power of your workstation.
+It takes about 2 hours in a Macbook Pro (2.5GHz quad-core Intel Core i7).
 
 
 ## Contributing
