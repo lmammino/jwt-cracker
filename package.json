@@ -1,10 +1,15 @@
 {
   "name": "jwt-cracker",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple HS256 JWT token brute force cracker",
   "main": "index.js",
   "bin": {
     "jwt-cracker": "index.js"
+  },
+  {
+    "engines" : {
+      "node" : ">=6.0.0"
+    }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
