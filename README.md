@@ -30,6 +30,10 @@ Where:
 * **maxLength**: the max length of the string generated during the brute force (default: 12)
 
 
+## Requirements
+
+This script requires Node.js version 6.0.0 or higher
+
 ## Example
 
 Cracking the default [jwt.io example](https://jwt.io):
