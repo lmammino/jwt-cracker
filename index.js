@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const variationsStream = require('variations-stream');
 const pkg = require('./package');
 
-const defaultAlphabet = 'abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789';
+const defaultAlphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const defaultMaxLength = 12;
 const token = process.argv[2];
 const alphabet = process.argv[3] || defaultAlphabet;
