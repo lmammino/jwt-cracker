@@ -26,7 +26,7 @@ jwt-cracker <token> [<alphabet>] [<maxLength>]
 Where:
 
 * **token**: the full HS256 JWT token string to crack
-* **alphabet**: the alphabet to use for the brute force (default: "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789")
+* **alphabet**: the alphabet to use for the brute force (default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 * **maxLength**: the max length of the string generated during the brute force (default: 12)
 
 
