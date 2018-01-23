@@ -33,6 +33,8 @@ const generateSignature = function(content, secret) {
       .update(content)
       .digest('base64')
       .replace('=', '')
+      .replace('+', '-')
+      .replace('/', '_')
   );
 };
 
