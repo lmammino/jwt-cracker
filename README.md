@@ -1,3 +1,9 @@
+ ![npm](https://img.shields.io/npm/dt/jwt-cracker.svg)
+ [![npm](https://img.shields.io/npm/v/jwt-cracker.svg)](https://www.npmjs.com/package/jwt-cracker)
+ [![Rawsec's CyberSecurity Inventory](https://inventory.rawsec.ml/img/badges/Rawsec-inventoried-FF5050_flat.svg)](https://inventory.rawsec.ml/tools.html#jwt-cracker) 
+ [![GitHub stars](https://img.shields.io/github/stars/lmammino/jwt-cracker.svg)](https://github.com/lmammino/jwt-cracker/stargazers)
+ [![GitHub license](https://img.shields.io/github/license/lmammino/jwt-cracker.svg)](https://github.com/lmammino/jwt-cracker/blob/master/LICENSE)
+
 # jwt-cracker
 
 Simple HS256 JWT token brute force cracker.
