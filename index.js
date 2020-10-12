@@ -32,9 +32,9 @@ const generateSignature = function(content, secret) {
     crypto.createHmac('sha256', secret)
       .update(content)
       .digest('base64')
-      .replace('=', '')
-      .replace('+', '-')
-      .replace('/', '_')
+      .replace(/=/g, '')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
   );
 };
 
