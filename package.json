@@ -1,16 +1,19 @@
 {
   "name": "jwt-cracker",
-  "version": "1.0.6",
+  "version": "2.0.0",
   "description": "Simple HS256 JWT token brute force cracker",
   "main": "index.js",
+  "type": "module",
   "bin": {
     "jwt-cracker": "index.js"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:lint": "eslint .",
+    "test:unit": "node test.js",
+    "test": "npm run test:lint && npm run test:unit"
   },
   "author": {
     "name": "Luciano Mammino",
@@ -23,5 +26,12 @@
   "license": "MIT",
   "dependencies": {
     "variations-stream": "^0.1.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.31.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.6.0",
+    "eslint-plugin-promise": "^6.1.1"
   }
 }
