@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
+import { join } from 'node:path'
 import { fork } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
 import variationsStream from 'variations-stream'
 
+const __dirname = new URL('.', import.meta.url).pathname
 const pkg = JSON.parse(await readFile(new URL('./package.json', import.meta.url)))
 const defaultAlphabet =
   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -60,7 +62,7 @@ variationsStream(alphabet, maxLength)
   })
 
 function forkChunk (chunk) {
-  const child = fork('process-chunk.js')
+  const child = fork(join(__dirname, 'process-chunk.js'))
   child.send({ chunk, content, signature })
   child.on('message', function (result) {
     attempts += chunkSize
