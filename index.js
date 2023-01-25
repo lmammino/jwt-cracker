@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
+import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import { fork } from 'node:child_process'
 import { readFile } from 'node:fs/promises'
 import variationsStream from 'variations-stream'
 
-const __dirname = new URL('.', import.meta.url).pathname
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const pkg = JSON.parse(await readFile(new URL('./package.json', import.meta.url)))
 const defaultAlphabet =
   'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
