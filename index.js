@@ -3,31 +3,24 @@
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import { fork } from 'node:child_process'
-import { readFile } from 'node:fs/promises'
 import variationsStream from 'variations-stream'
+import ArgsParser from './argsParser.js'
+import JWTValidator from './jwtValidator.js'
+import Constants from './constants.js'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
-const pkg = JSON.parse(await readFile(new URL('./package.json', import.meta.url)))
-const defaultAlphabet =
-  'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-const defaultMaxLength = 12
-const token = process.argv[2]
-const alphabet = process.argv[3] || defaultAlphabet
-const maxLength = Number(process.argv[4]) || defaultMaxLength
+const __dirname = fileURLToPath(new URL('.',
+  import.meta.url))
 
-if (typeof token === 'undefined' || token === '--help') {
-  console.log(
-    `jwt-cracker version ${pkg.version}
+const args = new ArgsParser()
 
-  Usage:
-    jwt-cracker <token> [<alphabet>] [<maxLength>]
+const token = args.token
+const alphabet = args.alphabet
+const maxLength = args.maxLength
 
-    token       the full HS256 jwt token to crack
-    alphabet    the alphabet to use for the brute force (default: ${defaultAlphabet})
-    maxLength   the max length of the string generated during the brute force (default: ${defaultMaxLength})
-`
-  )
-  process.exit(0)
+const validToken = JWTValidator.validateToken(token)
+
+if (!validToken) {
+  process.exit(Constants.EXIT_CODE_FAILURE)
 }
 
 const printResult = function (startTime, attempts, result) {
@@ -59,7 +52,7 @@ variationsStream(alphabet, maxLength)
   })
   .on('end', function () {
     printResult(startTime, attempts)
-    process.exit(1)
+    process.exit(Constants.EXIT_CODE_FAILURE)
   })
 
 function forkChunk (chunk) {
@@ -73,9 +66,10 @@ function forkChunk (chunk) {
     if (result) {
       // secret found, print result and exit
       printResult(startTime, attempts, result)
-      process.exit(0)
+      process.exit(Constants.EXIT_CODE_SUCCESS)
     }
   })
+
   child.on('exit', function () {
     // check if all child processes have finished, and if so, exit
     checkFinished()
