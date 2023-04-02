@@ -1,4 +1,4 @@
-import JWTValidator from '../JWTValidator.js'
+import JWTValidator from '../jwtValidator.js'
 
 import { describe, expect, test } from '@jest/globals'
 
