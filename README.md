@@ -26,7 +26,7 @@ npm install --global jwt-cracker
 From command line:
 
 ```bash
-jwt-cracker <token> [<alphabet>] [<maxLength>]
+jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>]
 ```
 
 Where:
@@ -45,7 +45,7 @@ This script requires Node.js version 6.0.0 or higher
 Cracking the default [jwt.io example](https://jwt.io):
 
 ```bash
-jwt-cracker "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ" "abcdefghijklmnopqrstuwxyz" 6
+jwt-cracker -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ -a abcdefghijklmnopqrstuwxyz --max 6
 ```
 
 It takes about 2 hours in a Macbook Pro (2.5GHz quad-core Intel Core i7).
