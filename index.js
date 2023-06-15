@@ -15,6 +15,7 @@ const args = new ArgsParser()
 
 const token = args.token
 const alphabet = args.alphabet
+const minLength = args.minLength
 const maxLength = args.maxLength
 
 const validToken = JWTValidator.validateToken(token)
@@ -43,11 +44,13 @@ let chunk = []
 
 variationsStream(alphabet, maxLength)
   .on('data', function (comb) {
-    chunk.push(comb)
-    if (chunk.length >= chunkSize) {
-      // save chunk and reset it
-      forkChunk(chunk)
-      chunk = []
+    if (comb.length >= minLength) {
+      chunk.push(comb)
+      if (chunk.length >= chunkSize) {
+        // save chunk and reset it
+        forkChunk(chunk)
+        chunk = []
+      }
     }
   })
   .on('end', function () {

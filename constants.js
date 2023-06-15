@@ -3,6 +3,10 @@ export default class Constants {
     return 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   }
 
+  static get DEFAULT_MIN_SECRET_LENGTH () {
+    return 1
+  }
+
   static get DEFAULT_MAX_SECRET_LENGTH () {
     return 12
   }
