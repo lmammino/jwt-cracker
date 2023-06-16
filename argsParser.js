@@ -6,7 +6,7 @@ export default class ArgsParser {
   constructor () {
     this.args = yargs(hideBin(process.argv))
       .usage(
-        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>]'
+        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--min <minLength>] [--max <maxLength>]'
       )
       .option('t', {
         alias: 'token',
@@ -20,9 +20,19 @@ export default class ArgsParser {
         describe: 'Alphabet to use for the brute force',
         default: Constants.DEFAULT_ALPHABET
       })
+      .option('min', {
+        describe: 'Minimum length of the secret. Note: 1<= min',
+        default: Constants.DEFAULT_MIN_SECRET_LENGTH
+      })
       .option('max', {
-        describe: 'Maximum length of the secret',
+        describe: 'Maximum length of the secret. Note: min <= max',
         default: Constants.DEFAULT_MAX_SECRET_LENGTH
+      })
+      .check(argv => {
+        if (argv.min < 1 || argv.max < argv.min) {
+          throw new Error('Invalid min or max arguments. Remember: 1<= min <= max')
+        }
+        return true
       })
       .help()
       .alias('h', 'help').argv
@@ -34,6 +44,10 @@ export default class ArgsParser {
 
   get alphabet () {
     return this.args.alphabet
+  }
+
+  get minLength () {
+    return this.args.min
   }
 
   get maxLength () {
