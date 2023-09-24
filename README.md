@@ -26,7 +26,7 @@ npm install --global jwt-cracker
 From command line:
 
 ```bash
-jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>]
+jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-f]
 ```
 
 Where:
@@ -34,7 +34,7 @@ Where:
 * **token**: the full HS256 JWT token string to crack
 * **alphabet**: the alphabet to use for the brute force (default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 * **maxLength**: the max length of the string generated during the brute force (default: 12)
-
+* **force**: force script to execute when the token isn't valid
 
 ## Requirements
 
