@@ -16,10 +16,11 @@ const args = new ArgsParser()
 const token = args.token
 const alphabet = args.alphabet
 const maxLength = args.maxLength
+const force = args.force || false
 
 const validToken = JWTValidator.validateToken(token)
 
-if (!validToken) {
+if (!validToken && (!force || !token.length)) {
   process.exit(Constants.EXIT_CODE_FAILURE)
 }
 

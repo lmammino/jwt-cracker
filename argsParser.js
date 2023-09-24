@@ -6,7 +6,7 @@ export default class ArgsParser {
   constructor () {
     this.args = yargs(hideBin(process.argv))
       .usage(
-        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>]'
+        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-f]'
       )
       .option('t', {
         alias: 'token',
@@ -24,6 +24,11 @@ export default class ArgsParser {
         describe: 'Maximum length of the secret',
         default: Constants.DEFAULT_MAX_SECRET_LENGTH
       })
+      .option('f', {
+        alias: 'force',
+        type: 'boolean',
+        describe: 'Skip token validation'
+      })
       .help()
       .alias('h', 'help').argv
   }
@@ -38,5 +43,9 @@ export default class ArgsParser {
 
   get maxLength () {
     return this.args.max
+  }
+
+  get force () {
+    return this.args.force
   }
 }
