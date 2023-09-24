@@ -7,6 +7,11 @@ export default class JWTValidator {
   }
 
   static validateGeneralJwtFormat (token) {
+    if (token.length === 0) {
+      console.log('Missing token')
+      return false
+    }
+
     const parts = token.split('.')
 
     if (parts.length !== 3 || !parts.every(part => part.length > 0)) {
@@ -34,7 +39,7 @@ export default class JWTValidator {
     }
 
     if (decodedHeader.typ !== 'JWT') {
-      console.log(`Unsupported Typ: ${decodedHeader.alg}`)
+      console.log(`Unsupported Typ: ${decodedHeader.typ}`)
       return false
     }
 

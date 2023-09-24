@@ -9,6 +9,7 @@ describe('JWTValidator', () => {
   const invalidHeaderToken = 'eyJhJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpqd3QtY3JhY2tlciJ9.c5ZqtVGS-Jc6WUJsaRBVzfpUOcMFLu0lo0fd2FwDnJE'
   const nonJwtTypToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ik5vdC1Kd3QifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpqd3QtY3JhY2tlciJ9.8SmsCZptHRoDeGclg5Tl_N5-tSJF24BBPYa_YKp8b4g'
   const validButUnsupportedHS512Token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Imp3dC1jcmFja2VyIn0.CcyaiMxfTVbG0SNPW9btRr5mJ3DCt0LOjVFtNJZW6ogjJxbeT6tAixi1uut2M8rlbTBYOqAxD56eIL7AXXaatw'
+  const emptyToken = ''
 
   describe('validateToken', () => {
     test('should return true for a valid HS256 JWT token', () => {
@@ -45,6 +46,11 @@ describe('JWTValidator', () => {
 
     test('should return false for a token with empty parts', () => {
       const result = JWTValidator.validateGeneralJwtFormat(invalidFormatEmptyPartsToken)
+      expect(result).toBe(false)
+    })
+
+    test('should return false if no token is provided', () => {
+      const result = JWTValidator.validateGeneralJwtFormat(emptyToken)
       expect(result).toBe(false)
     })
   })
