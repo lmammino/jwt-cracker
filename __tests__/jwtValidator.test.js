@@ -4,31 +4,46 @@ import { describe, expect, test } from '@jest/globals'
 
 describe('JWTValidator', () => {
   const validHS256Token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Imp3dC1jcmFja2VyIn0.TaRgJUlx6BXwhna8AYF8xGyAMmxODXYIjnNuYju--c8'
+  const validHS384Token = 'eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiJ9.zJjZgooLqpGti_j6-KRgY-22xWlExFDhRLho0EzRY6iAk68tu-czZOp13AeJ6aHo'
+  const validHS512Token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiJ9.tR6snQQ6RIf0RH9oEl_v5xDlLLduU2gzZhD86QO64ZtXv30Vjcpi61vbB7kBMFAvZFozGrtdhlonAzQ-k9OuZA'
   const invalidFormatToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Imp3dC1jcmFja2VyIn0'
   const invalidFormatEmptyPartsToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..'
   const invalidHeaderToken = 'eyJhJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpqd3QtY3JhY2tlciJ9.c5ZqtVGS-Jc6WUJsaRBVzfpUOcMFLu0lo0fd2FwDnJE'
   const nonJwtTypToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ik5vdC1Kd3QifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpqd3QtY3JhY2tlciJ9.8SmsCZptHRoDeGclg5Tl_N5-tSJF24BBPYa_YKp8b4g'
-  const validButUnsupportedHS512Token = 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Imp3dC1jcmFja2VyIn0.CcyaiMxfTVbG0SNPW9btRr5mJ3DCt0LOjVFtNJZW6ogjJxbeT6tAixi1uut2M8rlbTBYOqAxD56eIL7AXXaatw'
+  const validButUnsupportedRS256Token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJSUzI1NmluT1RBIiwibmFtZSI6IkpvaG4gRG9lIn0.ICV6gy7CDKPHMGJxV80nDZ7Vxe0ciqyzXD_Hr4mTDrdTyi6fNleYAyhEZq2J29HSI5bhWnJyOBzg2bssBUKMYlC2Sr8WFUas5MAKIr2Uh_tZHDsrCxggQuaHpF4aGCFZ1Qc0rrDXvKLuk1Kzrfw1bQbqH6xTmg2kWQuSGuTlbTbDhyhRfu1WDs-Ju9XnZV-FBRgHJDdTARq1b4kuONgBP430wJmJ6s9yl3POkHIdgV-Bwlo6aZluophoo5XWPEHQIpCCgDm3-kTN_uIZMOHs2KRdb6Px-VN19A5BYDXlUBFOo-GvkCBZCgmGGTlHF_cWlDnoA9XTWWcIYNyUI4PXNw'
 
   describe('validateToken', () => {
     test('should return true for a valid HS256 JWT token', () => {
-      const result = JWTValidator.validateToken(validHS256Token)
-      expect(result).toBe(true)
+      const { isTokenValid, algorithm } = JWTValidator.validateToken(validHS256Token)
+      expect(isTokenValid).toBe(true)
+      expect(algorithm).toBe('HS256')
+    })
+
+    test('should return true for a valid HS384 JWT token', () => {
+      const { isTokenValid, algorithm } = JWTValidator.validateToken(validHS384Token)
+      expect(isTokenValid).toBe(true)
+      expect(algorithm).toBe('HS384')
+    })
+
+    test('should return true for a valid HS512 JWT token', () => {
+      const { isTokenValid, algorithm } = JWTValidator.validateToken(validHS512Token)
+      expect(isTokenValid).toBe(true)
+      expect(algorithm).toBe('HS512')
     })
 
     test('should return false for a token with less than three parts', () => {
-      const result = JWTValidator.validateToken(invalidFormatToken)
-      expect(result).toBe(false)
+      const { isTokenValid } = JWTValidator.validateToken(invalidFormatToken)
+      expect(isTokenValid).toBe(false)
     })
 
     test('should return false for an unsupported token typ', () => {
-      const result = JWTValidator.validateToken(nonJwtTypToken)
-      expect(result).toBe(false)
+      const { isTokenValid } = JWTValidator.validateToken(nonJwtTypToken)
+      expect(isTokenValid).toBe(false)
     })
 
-    test('should return false for an unsupported HS512 algorithm', () => {
-      const result = JWTValidator.validateToken(validButUnsupportedHS512Token)
-      expect(result).toBe(false)
+    test('should return false for an unsupported token algorithm', () => {
+      const { isTokenValid } = JWTValidator.validateToken(validButUnsupportedRS256Token)
+      expect(isTokenValid).toBe(false)
     })
   })
 
@@ -49,29 +64,34 @@ describe('JWTValidator', () => {
     })
   })
 
-  describe('validateHS256AlgorithmHeader', () => {
+  describe('validateHmacAlgorithmHeader', () => {
     test('should return true for valid token with typ JWT and algorithm HS256', () => {
-      const result = JWTValidator.validateToken(validHS256Token)
-      expect(result).toBe(true)
+      const { isTokenValid } = JWTValidator.validateToken(validHS256Token)
+      expect(isTokenValid).toBe(true)
     })
 
-    test('should return false for a token with a invalid number of parts', () => {
-      const result = JWTValidator.validateHS256AlgorithmHeader(invalidFormatToken)
-      expect(result).toBe(false)
+    test('should return true for valid token with typ JWT and algorithm HS384', () => {
+      const { isTokenValid } = JWTValidator.validateToken(validHS384Token)
+      expect(isTokenValid).toBe(true)
+    })
+
+    test('should return true for valid token with typ JWT and algorithm HS512', () => {
+      const { isTokenValid } = JWTValidator.validateToken(validHS512Token)
+      expect(isTokenValid).toBe(true)
     })
 
     test('should return false for a token with a invalid header', () => {
-      const result = JWTValidator.validateHS256AlgorithmHeader(invalidHeaderToken)
+      const result = JWTValidator.validateHmacAlgorithmHeader(invalidHeaderToken)
       expect(result).toBe(false)
     })
 
     test('should return false for an unsupported token typ', () => {
-      const result = JWTValidator.validateHS256AlgorithmHeader(nonJwtTypToken)
+      const result = JWTValidator.validateHmacAlgorithmHeader(nonJwtTypToken)
       expect(result).toBe(false)
     })
 
-    test('should return false for an unsupported HS512 algorithm', () => {
-      const result = JWTValidator.validateHS256AlgorithmHeader(validButUnsupportedHS512Token)
+    test('should return false for an unsupported token algorithm', () => {
+      const result = JWTValidator.validateHmacAlgorithmHeader(validButUnsupportedRS256Token)
       expect(result).toBe(false)
     })
   })
