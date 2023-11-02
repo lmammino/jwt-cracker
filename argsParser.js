@@ -17,20 +17,20 @@ export default class ArgsParser {
       .option('a', {
         alias: 'alphabet',
         type: 'string',
-        describe: 'Alphabet to use for the brute force'
+        describe: 'Alphabet to use for the brute force',
+        default: Constants.DEFAULT_ALPHABET
       })
       .option('max', {
-        describe: 'Maximum length of the secret'
+        describe: 'Maximum length of the secret',
+        default: Constants.DEFAULT_MAX_SECRET_LENGTH
       })
       .option('d', {
         alias: 'dictionary',
         type: 'string',
-        describe: 'Password file to use instead of the brute force',
-        conflicts: 'a'
+        describe: 'Password file to use instead of the brute force'
       })
       .help()
-      .alias('h', 'help')
-      .wrap(yargs.terminalWidth).argv
+      .alias('h', 'help').argv
   }
 
   get token () {
@@ -38,11 +38,11 @@ export default class ArgsParser {
   }
 
   get alphabet () {
-    return this.args.alphabet || Constants.DEFAULT_ALPHABET
+    return this.args.alphabet
   }
 
   get maxLength () {
-    return this.args.max || Constants.DEFAULT_MAX_SECRET_LENGTH
+    return this.args.max
   }
 
   get dictionaryFilePath () {
