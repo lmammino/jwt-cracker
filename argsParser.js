@@ -30,6 +30,7 @@ export default class ArgsParser {
         describe: 'Password file to use instead of the brute force'
       })
       .help()
+      .wrap(yargs.terminalWidth)
       .alias('h', 'help').argv
   }
 
