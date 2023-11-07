@@ -6,7 +6,7 @@ export default class ArgsParser {
   constructor () {
     this.args = yargs(hideBin(process.argv))
       .usage(
-        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-d <dictionaryFile>]'
+        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-d <dictionaryFile>] [-f]'
       )
       .option('t', {
         alias: 'token',
@@ -29,6 +29,11 @@ export default class ArgsParser {
         type: 'string',
         describe: 'Password file to use instead of the brute force'
       })
+      .option('f', {
+        alias: 'force',
+        type: 'boolean',
+        describe: 'Skip token validation'
+      })
       .help()
       .wrap(yargs.terminalWidth)
       .alias('h', 'help').argv
@@ -44,6 +49,10 @@ export default class ArgsParser {
 
   get maxLength () {
     return this.args.max
+  }
+
+  get force () {
+    return this.args.force
   }
 
   get dictionaryFilePath () {

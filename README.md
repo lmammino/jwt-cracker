@@ -26,7 +26,7 @@ npm install --global jwt-cracker
 From command line:
 
 ```bash
-jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-d <dictionaryFilePath>]
+jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-d <dictionaryFilePath>] [-f]
 ```
 
 Where:
@@ -35,6 +35,7 @@ Where:
 * **alphabet**: the alphabet to use for the brute force (default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 * **maxLength**: the max length of the string generated during the brute force (default: 12)
 * **dictionaryFilePath**: path to a list of passwords (one per line) to use instead of brute force
+* **force**: force script to execute when the token isn't valid
 
 ## Requirements
 

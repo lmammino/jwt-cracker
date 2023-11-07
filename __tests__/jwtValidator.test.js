@@ -11,6 +11,7 @@ describe('JWTValidator', () => {
   const invalidHeaderToken = 'eyJhJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpqd3QtY3JhY2tlciJ9.c5ZqtVGS-Jc6WUJsaRBVzfpUOcMFLu0lo0fd2FwDnJE'
   const nonJwtTypToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ik5vdC1Kd3QifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikpqd3QtY3JhY2tlciJ9.8SmsCZptHRoDeGclg5Tl_N5-tSJF24BBPYa_YKp8b4g'
   const validButUnsupportedRS256Token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJSUzI1NmluT1RBIiwibmFtZSI6IkpvaG4gRG9lIn0.ICV6gy7CDKPHMGJxV80nDZ7Vxe0ciqyzXD_Hr4mTDrdTyi6fNleYAyhEZq2J29HSI5bhWnJyOBzg2bssBUKMYlC2Sr8WFUas5MAKIr2Uh_tZHDsrCxggQuaHpF4aGCFZ1Qc0rrDXvKLuk1Kzrfw1bQbqH6xTmg2kWQuSGuTlbTbDhyhRfu1WDs-Ju9XnZV-FBRgHJDdTARq1b4kuONgBP430wJmJ6s9yl3POkHIdgV-Bwlo6aZluophoo5XWPEHQIpCCgDm3-kTN_uIZMOHs2KRdb6Px-VN19A5BYDXlUBFOo-GvkCBZCgmGGTlHF_cWlDnoA9XTWWcIYNyUI4PXNw'
+  const emptyToken = ''
 
   describe('validateToken', () => {
     test('should return true for a valid HS256 JWT token', () => {
@@ -60,6 +61,11 @@ describe('JWTValidator', () => {
 
     test('should return false for a token with empty parts', () => {
       const result = JWTValidator.validateGeneralJwtFormat(invalidFormatEmptyPartsToken)
+      expect(result).toBe(false)
+    })
+
+    test('should return false if no token is provided', () => {
+      const result = JWTValidator.validateGeneralJwtFormat(emptyToken)
       expect(result).toBe(false)
     })
   })

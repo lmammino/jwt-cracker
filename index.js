@@ -19,12 +19,13 @@ const {
   token,
   alphabet,
   maxLength,
-  dictionaryFilePath
+  dictionaryFilePath,
+  force
 } = new ArgsParser()
 
 const { isTokenValid, algorithm } = JWTValidator.validateToken(token)
 
-if (!isTokenValid) {
+if (!isTokenValid && (!force || !token.length)) {
   process.exit(Constants.EXIT_CODE_FAILURE)
 }
 
