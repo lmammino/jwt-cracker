@@ -1,28 +1,35 @@
 #!/usr/bin/env node
 
-import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import { fork } from 'node:child_process'
+import { fileURLToPath } from 'node:url'
+import { createReadStream } from 'node:fs'
+import { createInterface } from 'node:readline'
+
 import variationsStream from 'variations-stream'
+
+import Constants from './constants.js'
 import ArgsParser from './argsParser.js'
 import JWTValidator from './jwtValidator.js'
-import Constants from './constants.js'
 
-const __dirname = fileURLToPath(new URL('.',
-  import.meta.url))
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const numberFormatter = Intl.NumberFormat('en', { notation: 'compact' }).format
 
-const args = new ArgsParser()
+const {
+  token,
+  alphabet,
+  maxLength,
+  dictionaryFilePath,
+  force
+} = new ArgsParser()
 
-const token = args.token
-const alphabet = args.alphabet
-const maxLength = args.maxLength
-const force = args.force || false
+const { isTokenValid, algorithm } = JWTValidator.validateToken(token)
 
-const validToken = JWTValidator.validateToken(token)
-
-if (!validToken && (!force || !token.length)) {
+if (!isTokenValid && (!force || !token.length)) {
   process.exit(Constants.EXIT_CODE_FAILURE)
 }
+
+const timeTaken = (startTime) => (new Date().getTime() - startTime) / 1000
 
 const printResult = function (startTime, attempts, result) {
   if (result) {
@@ -30,39 +37,64 @@ const printResult = function (startTime, attempts, result) {
   } else {
     console.log('SECRET NOT FOUND')
   }
-  console.log('Time taken (sec):', (new Date().getTime() - startTime) / 1000)
-  console.log('Attempts:', attempts)
+  console.log('Time taken (sec):', timeTaken(startTime))
+  console.log('Total attempts:', attempts)
 }
 
 const [header, payload, signature] = token.split('.')
 const content = `${header}.${payload}`
 
-const startTime = new Date().getTime()
-let attempts = 0
-const chunkSize = 20000
 let chunk = []
+let attempts = 0
+let isStreamClosed = false
+const startTime = new Date().getTime()
+const childProcesses = []
 
-variationsStream(alphabet, maxLength)
-  .on('data', function (comb) {
-    chunk.push(comb)
-    if (chunk.length >= chunkSize) {
-      // save chunk and reset it
-      forkChunk(chunk)
-      chunk = []
-    }
+if (dictionaryFilePath) {
+  const lineReader = createInterface({
+    input: createReadStream(dictionaryFilePath)
   })
-  .on('end', function () {
-    printResult(startTime, attempts)
+
+  lineReader.on('error', function () {
+    console.log(`Unable to read the dictionary file "${dictionaryFilePath}" (make sure the file path exists)`)
     process.exit(Constants.EXIT_CODE_FAILURE)
   })
+  lineReader.on('line', addToQueue)
+  lineReader.on('close', closeStream)
+} else {
+  variationsStream(alphabet, maxLength)
+    .on('data', addToQueue)
+    .on('end', closeStream)
+}
+
+function closeStream () {
+  // purge remaining items in chunk
+  purgeQueue()
+  isStreamClosed = true
+}
+
+function purgeQueue () {
+  // save chunk and reset it
+  forkChunk(chunk)
+  chunk = []
+}
+
+function addToQueue (comb) {
+  chunk.push(comb)
+  if (chunk.length >= Constants.CHUNK_SIZE) {
+    purgeQueue()
+  }
+}
 
 function forkChunk (chunk) {
   const child = fork(join(__dirname, 'process-chunk.js'))
-  child.send({ chunk, content, signature })
+  childProcesses.push(child)
+  child.send({ chunk, content, signature, algorithm })
   child.on('message', function (result) {
-    attempts += chunkSize
-    if (result === null && attempts % 100000 === 0) {
-      console.log('Attempts:', attempts)
+    attempts += chunk.length
+    if (result === null && attempts % (Constants.CHUNK_SIZE * 5) === 0) {
+      const speed = numberFormatter(Math.trunc(attempts / timeTaken(startTime)))
+      console.log(`Attempts: ${attempts} (${speed}/s last attempt was '${chunk[chunk.length - 1]}')`)
     }
     if (result) {
       // secret found, print result and exit
@@ -71,12 +103,14 @@ function forkChunk (chunk) {
     }
   })
 
-  child.on('exit', function () {
-    // check if all child processes have finished, and if so, exit
-    checkFinished()
-  })
+  child.on('exit', checkFinished)
 }
 
 function checkFinished () {
   // check if all child processes have finished, and if so, exit
+  childProcesses.pop()
+  if (isStreamClosed && childProcesses.length === 0) {
+    printResult(startTime, attempts)
+    process.exit(Constants.EXIT_CODE_FAILURE)
+  }
 }

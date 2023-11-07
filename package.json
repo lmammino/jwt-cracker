@@ -1,7 +1,7 @@
 {
   "name": "jwt-cracker",
-  "version": "3.0.0",
-  "description": "Simple HS256 JWT token brute force cracker",
+  "version": "4.0.0",
+  "description": "Simple HS256-512 JWT token brute force cracker",
   "main": "index.js",
   "type": "module",
   "bin": {
@@ -42,6 +42,10 @@
     {
       "name": "Rob Waller",
       "url": "https://github.com/RobDWaller"
+    },
+    {
+      "name": "Flibustier",
+      "url": "https://github.com/flibustier"
     }
   ],
   "repository": {

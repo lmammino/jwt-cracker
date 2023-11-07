@@ -6,12 +6,12 @@ export default class ArgsParser {
   constructor () {
     this.args = yargs(hideBin(process.argv))
       .usage(
-        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-f]'
+        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-d <dictionaryFile>] [-f]'
       )
       .option('t', {
         alias: 'token',
         type: 'string',
-        describe: 'HS256 JWT token to crack',
+        describe: 'HMAC-SHA JWT token to crack',
         demandOption: true
       })
       .option('a', {
@@ -24,12 +24,18 @@ export default class ArgsParser {
         describe: 'Maximum length of the secret',
         default: Constants.DEFAULT_MAX_SECRET_LENGTH
       })
+      .option('d', {
+        alias: 'dictionary',
+        type: 'string',
+        describe: 'Password file to use instead of the brute force'
+      })
       .option('f', {
         alias: 'force',
         type: 'boolean',
         describe: 'Skip token validation'
       })
       .help()
+      .wrap(yargs.terminalWidth)
       .alias('h', 'help').argv
   }
 
@@ -47,5 +53,9 @@ export default class ArgsParser {
 
   get force () {
     return this.args.force
+  }
+
+  get dictionaryFilePath () {
+    return this.args.dictionary
   }
 }

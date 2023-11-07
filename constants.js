@@ -7,7 +7,7 @@ export default class Constants {
     return 12
   }
 
-  static get MAX_CHUNK_SIZE () {
+  static get CHUNK_SIZE () {
     return 20000
   }
 

@@ -6,7 +6,7 @@
 
 # jwt-cracker
 
-Simple HS256 JWT token brute force cracker.
+Simple HS256, HS384 & HS512 JWT token brute force cracker.
 
 Effective only to crack JWT tokens with weak secrets.
 **Recommendation**: Use strong long secrets or RS256 tokens.
@@ -26,19 +26,20 @@ npm install --global jwt-cracker
 From command line:
 
 ```bash
-jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-f]
+jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-d <dictionaryFilePath>] [-f]
 ```
 
 Where:
 
-* **token**: the full HS256 JWT token string to crack
+* **token**: the full HS256-512 JWT token string to crack
 * **alphabet**: the alphabet to use for the brute force (default: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 * **maxLength**: the max length of the string generated during the brute force (default: 12)
+* **dictionaryFilePath**: path to a list of passwords (one per line) to use instead of brute force
 * **force**: force script to execute when the token isn't valid
 
 ## Requirements
 
-This script requires Node.js version 6.0.0 or higher
+This script requires Node.js version 16.0.0 or higher
 
 ## Example
 
@@ -50,6 +51,13 @@ jwt-cracker -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwi
 
 It takes about 2 hours in a Macbook Pro (2.5GHz quad-core Intel Core i7).
 
+Or using a list of passwords taken from https://github.com/danielmiessler/SecLists
+
+```bash
+jwt-cracker -t eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ -d darkweb2017-top10000.txt
+```
+
+It takes less than a second.
 
 ## Contributing
 
