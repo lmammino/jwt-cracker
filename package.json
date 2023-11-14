@@ -2,17 +2,18 @@
   "name": "jwt-cracker",
   "version": "4.1.0",
   "description": "Simple HS256-512 JWT token brute force cracker",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
   "bin": {
-    "jwt-cracker": "index.js"
+    "jwt-cracker": "src/index.js"
   },
   "engines": {
     "node": ">=16.0.0"
   },
   "scripts": {
-    "test:lint": "eslint .",
-    "test": "npm run test:lint && node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --silent"
+    "test:lint": "biome lint src",
+    "test:format": "biome format src",
+    "test": "npm run test:lint && npm run test:format && node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --silent"
   },
   "author": {
     "name": "Luciano Mammino",
@@ -62,11 +63,7 @@
     "yargs": "^17.7.1"
   },
   "devDependencies": {
-    "eslint": "^8.31.0",
-    "eslint-config-standard": "^17.0.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.6.0",
-    "eslint-plugin-promise": "^6.1.1",
+    "@biomejs/biome": "1.3.3",
     "jest": "^29.5.0"
   }
 }
