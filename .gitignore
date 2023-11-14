@@ -38,7 +38,6 @@ jspm_packages
 
 ### VisualStudioCode ###
 .vs/*
-.vscode/*
 
 # Local History for Visual Studio Code
 .history/

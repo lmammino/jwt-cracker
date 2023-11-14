@@ -3,7 +3,7 @@ import { createHmac } from 'node:crypto'
 const DIGEST_ALGORITHM = {
   HS256: 'sha256',
   HS384: 'sha384',
-  HS512: 'sha512'
+  HS512: 'sha512',
 }
 
 const signatureGenerator = (algorithm, content) => (secret) =>
@@ -14,7 +14,7 @@ const signatureGenerator = (algorithm, content) => (secret) =>
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
 
-process.on('message', function ({ chunk, content, signature, algorithm }) {
+process.on('message', ({ chunk, content, signature, algorithm }) => {
   const generateSignature = signatureGenerator(algorithm, content)
   for (let i = 0; i < chunk.length; i++) {
     const currentSignature = generateSignature(chunk[i])

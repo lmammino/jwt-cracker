@@ -1,61 +1,61 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import Constants from './constants.js'
+import { DEFAULT_ALPHABET, DEFAULT_MAX_SECRET_LENGTH } from './constants.js'
 
 export default class ArgsParser {
-  constructor () {
+  constructor() {
     this.args = yargs(hideBin(process.argv))
       .usage(
-        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-d <dictionaryFile>] [-f]'
+        'Usage: jwt-cracker -t <token> [-a <alphabet>] [--max <maxLength>] [-d <dictionaryFile>] [-f]',
       )
       .option('t', {
         alias: 'token',
         type: 'string',
         describe: 'HMAC-SHA JWT token to crack',
-        demandOption: true
+        demandOption: true,
       })
       .option('a', {
         alias: 'alphabet',
         type: 'string',
         describe: 'Alphabet to use for the brute force',
-        default: Constants.DEFAULT_ALPHABET
+        default: DEFAULT_ALPHABET,
       })
       .option('max', {
         describe: 'Maximum length of the secret',
-        default: Constants.DEFAULT_MAX_SECRET_LENGTH
+        default: DEFAULT_MAX_SECRET_LENGTH,
       })
       .option('d', {
         alias: 'dictionary',
         type: 'string',
-        describe: 'Password file to use instead of the brute force'
+        describe: 'Password file to use instead of the brute force',
       })
       .option('f', {
         alias: 'force',
         type: 'boolean',
-        describe: 'Skip token validation'
+        describe: 'Skip token validation',
       })
       .help()
       .wrap(yargs.terminalWidth)
       .alias('h', 'help').argv
   }
 
-  get token () {
+  get token() {
     return this.args.token
   }
 
-  get alphabet () {
+  get alphabet() {
     return this.args.alphabet
   }
 
-  get maxLength () {
+  get maxLength() {
     return this.args.max
   }
 
-  get force () {
+  get force() {
     return this.args.force
   }
 
-  get dictionaryFilePath () {
+  get dictionaryFilePath() {
     return this.args.dictionary
   }
 }
