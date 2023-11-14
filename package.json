@@ -11,8 +11,8 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "test:lint": "biome lint src",
-    "test:format": "biome format src",
+    "test:lint": "biome lint .",
+    "test:format": "biome format .",
     "test": "npm run test:lint && npm run test:format && node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --silent"
   },
   "author": {
